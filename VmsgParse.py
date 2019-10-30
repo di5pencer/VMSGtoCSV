@@ -29,8 +29,8 @@ def hexConvert(s1):
     pos=0
     for a1 in s1:
         #count some letters so we can loop
-        lenght = len(s1)
-        if pos <= lenght:
+        length = len(s1)
+        if pos <= length:
             try:
                 print(bytearray.fromhex(a1).decode())
                 hexBuffer.append(bytearray.fromhex(a1).decode())
@@ -38,7 +38,7 @@ def hexConvert(s1):
             except ValueError:
                 pass
 
-        if pos >= lenght:
+        if pos >= length:
             sms = stringConvert(hexBuffer)
             print(sms)
             listConvert.append(sms)
