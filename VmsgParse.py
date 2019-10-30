@@ -1,20 +1,18 @@
 import csv
+
+#Takes a file called sms.vmsg from the working directory. I will fix this later...
+
 file = "sms.vmsg"
 
 # Make some lists
-listBox = []
 listStatus = []
 listSeen = []
-listType = []
 listDate = []
-listOrigin = []
 listSMShex = []
 hexDecode = []
 listConvert = []
-
 hexDecode1 = []
 hexBuffer = []
-
 
 # Make some functions.
 
