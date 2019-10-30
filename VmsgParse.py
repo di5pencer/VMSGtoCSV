@@ -16,6 +16,7 @@ hexBuffer = []
 
 # Make some functions.
 
+#converts the list array of characters from the buffer to a string
 def stringConvert(s):
     new = ""
     # traverse in the string
@@ -24,6 +25,7 @@ def stringConvert(s):
     # return string
     return new
 
+#converts the hex characters into ASCII
 
 def hexConvert(s1):
     pos=0
@@ -32,20 +34,24 @@ def hexConvert(s1):
         length = len(s1)
         if pos <= length:
             try:
-                print(bytearray.fromhex(a1).decode())
+                #print(bytearray.fromhex(a1).decode())
                 hexBuffer.append(bytearray.fromhex(a1).decode())
                 pos=pos+1
+            #needs more robust error correction
             except ValueError:
                 pass
 
+#once it has reached the end of the input characters, convert to a string, empty list etc.
         if pos >= length:
             sms = stringConvert(hexBuffer)
-            print(sms)
+            print("Succesfully decoded SMS: " + str(sms))
             listConvert.append(sms)
             hexBuffer.clear()
             pos=0
 
-#read the file and write data to lists. 
+#read the file and write data to lists.
+
+print("Loading data. \n")
 with open (file) as f:
     for x in f:
         if x.startswith('Date:'):
@@ -72,8 +78,10 @@ for z in listSMShex:
 rows = zip(listDate,listStatus,listSMShex,listConvert)
 
 #Write out a CSV
+print("\nWriting CSV.")
 with open('csv.csv', "w") as f:
     writer = csv.writer(f)
     writer.writerow(["Date: ",'Status: ', "HEX: ","Converted: "])
     for row in rows:
         writer.writerow(row)
+print("Converion complete, exiting.")
