@@ -1,6 +1,6 @@
 import csv
 
-#Takes a file called sms.vmsg from the working directory. I will fix this later...
+#Takes a file called sms.vmsg from the working directory.
 
 file = "sms.vmsg"
 
@@ -8,39 +8,37 @@ file = "sms.vmsg"
 listStatus = []
 listSeen = []
 listDate = []
+listBox=[]
 listSMShex = []
 hexDecode = []
 listConvert = []
-hexDecode1 = []
 hexBuffer = []
 
 # Make some functions.
 
-#converts the list array of characters from the buffer to a string
+#converts the list array of characters into a string
 
-
-def stringConvert(s):
+def stringConvert(stringInput):
     new = ""
-    # traverse in the string
-    for b in s:
+    for b in stringInput:
         new += b
     # return string
     return new.strip('\n')
 
 #converts the hex characters into ASCII
 
-
-def hexConvert(s1):
+def hexConvert(stringInput2):
     pos = 0
     sms = ""
-    for a1 in s1:
+    for hexCharacter in stringInput2:
         #count some letters so we can loop
-        length = len(s1)
+        length = len(stringInput2)
         if pos <= length:
             try:
                 #print(bytearray.fromhex(a1).decode())
+                #unicode to prevent errors with certain characters
                 hexBuffer.append(bytearray.fromhex(
-                    a1.strip('\n')).decode('unicode_escape'))
+                    hexCharacter.strip('\n')).decode('unicode_escape'))
                 pos = pos+1
             #needs more robust error correction
             except ValueError as e:
@@ -58,14 +56,19 @@ def hexConvert(s1):
 
 #read the file and write data to lists.
 
-
 print("Loading data. \n")
+
 with open(file) as f:
     for x in f:
         if x.startswith('Date:'):
             x = x.split(':')
             x = x[1]
             listDate.append(x.strip('\n'))
+
+        if x.startswith('X-BOX:'):
+            x = x.split(':')
+            x = x[1]
+            listBox.append(x.strip('\n'))
 
         if x.startswith("SubjectENCODING"):
             #print (x)
@@ -81,15 +84,17 @@ with open(file) as f:
             x = x[1]
             listStatus.append(x.strip('\n'))
 
-
 ## Zip the lists together
-rows = zip(listDate, listStatus, listSMShex, listConvert)
+rows = zip(listDate, listStatus,listBox, listConvert,listSMShex)
 
 #Write out a CSV
 print("\nWriting CSV.")
 with open('csv.csv', "w", newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
-    writer.writerow(["Date: ", 'Status: ', "HEX: ", "Converted: "])
+    #add some headers
+    writer.writerow(["Date: ", 'Status: ',"Box:", "Converted: ", "Orig Values"])
+    #write the rows
     for row in rows:
         writer.writerow(row)
+
 print("Converion complete, exiting.")
