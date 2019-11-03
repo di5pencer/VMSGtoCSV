@@ -1,5 +1,7 @@
 # VMSGtoCSV
-Extracts SMS from VMSG and converts to CSV. This works wiht the VMSG format output by OPPO phones.
+Extracts SMS from VMSG and converts to CSV. This works with the VMSG format output by OPPO phones.
+
+Takes a file called "sms.vmsg".
 
 These phones convert ASCII Characters to HEX values in the SMS backup file. 
 

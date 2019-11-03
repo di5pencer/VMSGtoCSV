@@ -17,7 +17,6 @@ hexBuffer = []
 # Make some functions.
 
 #converts the list array of characters into a string
-
 def stringConvert(stringInput):
     new = ""
     for b in stringInput:
@@ -26,7 +25,6 @@ def stringConvert(stringInput):
     return new.strip('\n')
 
 #converts the hex characters into ASCII
-
 def hexConvert(stringInput2):
     pos = 0
     sms = ""
@@ -40,23 +38,26 @@ def hexConvert(stringInput2):
                 hexBuffer.append(bytearray.fromhex(
                     hexCharacter.strip('\n')).decode('unicode_escape'))
                 pos = pos+1
-            #needs more robust error correction
+            #Needs more robust error correction
+            #Prints error message
             except ValueError as e:
-                print("error")
-                print(e)
+                print('\x1b[1;31;40m' + "Error!!" +
+                      '\x1b[0m')
+                print('\x1b[1;31;40m' + str(e) + '\x1b[0m')
                 #pass
 
-#once it has reached the end of the input characters, convert to a string, empty list etc.
+#Once it has reached the end of the input characters, convert to a string, empty list etc.
         if pos >= length:
             sms = stringConvert(hexBuffer)
-            print("Succesfully decoded SMS: " + str(sms))
+            print('\x1b[1;32;40m' + "Succesfully decoded SMS:" +
+                  '\x1b[0m' +" " + str(sms))
             hexBuffer.clear()
             pos = 0
             return sms
 
-#read the file and write data to lists.
+#Read the file and write data to lists.
 
-print("Loading data. \n")
+print('\x1b[1;33;40mLoading data.\x1b[0m\n')
 
 with open(file) as f:
     for x in f:
@@ -88,8 +89,8 @@ with open(file) as f:
 rows = zip(listDate, listStatus,listBox, listConvert,listSMShex)
 
 #Write out a CSV
-print("\nWriting CSV.")
-with open('csv.csv', "w", newline='', encoding='utf-8') as f:
+print('\n\x1b[1;33;40mWriting CSV.\x1b[0m')
+with open('output.csv', "w", newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
     #add some headers
     writer.writerow(["Date: ", 'Status: ',"Box:", "Converted: ", "Orig Values"])
@@ -97,4 +98,4 @@ with open('csv.csv', "w", newline='', encoding='utf-8') as f:
     for row in rows:
         writer.writerow(row)
 
-print("Converion complete, exiting.")
+print('\x1b[1;33;40m' "Conversion complete, exiting." '\x1b[0m')
