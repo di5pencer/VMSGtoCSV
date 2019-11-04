@@ -3,3 +3,4 @@ VmsgParse copy.py
 output.csv
 .vscode/settings.json
 parse.py
+sms.csv
