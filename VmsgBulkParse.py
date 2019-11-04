@@ -113,6 +113,12 @@ def vmsgConvert(fileName):
         #write the rows
         for row in rows:
             writer.writerow(row)
+        #Clear out the lists
+        listDate.clear()
+        listStatus.clear()
+        listBox.clear()
+        listConvert.clear()
+        listSMShex.clear()
         
     loopCount +=1
 

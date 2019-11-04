@@ -4,3 +4,5 @@ output.csv
 .vscode/settings.json
 parse.py
 sms.csv
+sms copy.vmsg
+sms copy.csv
