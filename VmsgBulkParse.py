@@ -1,16 +1,19 @@
+## Imports .vmsg files and converts them to a CSV
+## of human readable text messages.
+## This script uses Ansi escape codes to colour outputs.
+## In incompatible sysstems it may lead to artefacts such as
+## \x1b[1;31;40m appearing in the print output.
+
 import csv
 import os
 
 #load up vmsg files in project directory
 
 files = os.listdir()
-files2 = []
-fileName1=[]
-for inputFile in files:
-    if inputFile.endswith('vmsg'):
-        files2.append(inputFile)
-        fileName1.append(inputFile.split('.')[0])
-
+inFiles = []
+for allFiles in files:
+    if allFiles.endswith('.vmsg'):
+        inFiles.append(allFiles)
 
 # Make some lists
 listStatus = []
@@ -21,7 +24,6 @@ listSMShex = []
 hexDecode = []
 listConvert = []
 hexBuffer = []
-loopCount = 0
 
 # Make some functions.
 #Converts the list array of characters into a string
@@ -52,7 +54,6 @@ def hexConvert(stringInput2):
                 print('\x1b[1;31;40m' + "Error!!" +
                       '\x1b[0m')
                 print('\x1b[1;31;40m' + str(e) + '\x1b[0m')
-                #pass
 
 #Once it has reached the end of the input characters, convert to a string, empty list etc.
         if pos >= length:
@@ -64,10 +65,9 @@ def hexConvert(stringInput2):
             return sms
 
 #Read the file and write data to lists.
-
 print('\x1b[1;33;40mLoading data.\x1b[0m\n')
-print("Loaded " + str(len(files2)) + " files. \n")
-
+print("Loaded " + str(len(inFiles)) + " files. \n")
+loopCount = 0
 def vmsgConvert(fileName):
     with open(fileName) as f:
         for x in f:
@@ -100,15 +100,14 @@ def vmsgConvert(fileName):
 
     #Write out a CSV
     print('\x1b[1;33;40m' "Conversion complete." '\x1b[0m')
-    print('\n\x1b[1;33;40mWriting CSV File.\x1b[0m' + '\n\x1b')
+    print('\x1b[1;33;40mWriting out to CSV file.\x1b[0m' + '\n\x1b[0m')
     global loopCount
 
-    fileName3 = str(fileName1[loopCount]) + ".csv"
+    outFile = str(fileName.split('.')[0]) + ".csv"
     
-
-    with open(fileName3, "w", newline='', encoding='utf-8') as f:
+    with open(outFile, "w", newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        #add some headers
+        #Add some headers to the CSV
         writer.writerow(["Date: ", 'Status: ',"Box:", "Converted: ", "Orig Values"])
         #write the rows
         for row in rows:
@@ -118,9 +117,11 @@ def vmsgConvert(fileName):
         listStatus.clear()
         listBox.clear()
         listConvert.clear()
-        listSMShex.clear()
-        
+        listSMShex.clear()  
     loopCount +=1
 
-for vmsgFile in files2:
+#Run it all. 
+for vmsgFile in inFiles:
     vmsgConvert(vmsgFile)
+print("\x1b[1;33;40mAll files complete.\x1b[0m")
+
